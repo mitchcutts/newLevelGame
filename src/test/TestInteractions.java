@@ -40,8 +40,8 @@ public class TestInteractions {
 		
 		assertEquals(InteractionResult.NUKED, nuke.interact(gameBoard, nuke.getLocation()));
 		assertEquals(InteractionResult.RADIATE, nuke.interact(gameBoard, nuke.getLocation()+2));
-		assertEquals(InteractionResult.RADIATE, nuke.interact(gameBoard, nuke.getLocation()+1));
-		assertEquals(InteractionResult.RADIATE, nuke.interact(gameBoard, nuke.getLocation()-1));
+		assertEquals(InteractionResult.NUKED, nuke.interact(gameBoard, nuke.getLocation()+1));
+		assertEquals(InteractionResult.NUKED, nuke.interact(gameBoard, nuke.getLocation()-1));
 		assertEquals(InteractionResult.RADIATE, nuke.interact(gameBoard, nuke.getLocation()-2));
 		
 		
@@ -63,8 +63,7 @@ public class TestInteractions {
 		Warrior warrior = new Warrior(10);
 		gameBoard[10] = warrior;
 		
-		assertEquals(InteractionResult.HIT, warrior.interact(gameBoard, warrior.getLocation()));
-		
+		assertEquals(InteractionResult.NONE, warrior.interact(gameBoard, warrior.getLocation()));
 		assertEquals(InteractionResult.HIT, warrior.interact(gameBoard, warrior.getLocation()-1));
 		assertEquals(InteractionResult.HIT, warrior.interact(gameBoard, warrior.getLocation()+1));
 		
@@ -89,18 +88,20 @@ public class TestInteractions {
 		Treasure treasure = new Treasure(10);
 		gameBoard[10] = treasure;
 		
-		assertEquals(InteractionResult.GET_POINT, treasure.interact(gameBoard, treasure.getLocation()));
+		assertEquals(InteractionResult.GET_POINT, treasure.interact(gameBoard, treasure.getLocation()+1));
+		assertEquals(InteractionResult.GET_POINT, treasure.interact(gameBoard, treasure.getLocation()-1));
+		assertEquals(InteractionResult.NONE, treasure.interact(gameBoard, treasure.getLocation()));
 		
 		
 		
 
 		
 		
-		for(int i=0; i<treasure.getLocation(); i++)	{
+		for(int i=0; i<treasure.getLocation()-1; i++)	{
 			assertEquals(InteractionResult.NONE, treasure.interact(gameBoard, i));
 		}
 		
-		for(int i=treasure.getLocation()+1; i<GameEngine.BOARD_SIZE; i++)	{
+		for(int i=treasure.getLocation()+2; i<GameEngine.BOARD_SIZE; i++)	{
 			assertEquals(InteractionResult.NONE, treasure.interact(gameBoard, i));
 		}	
 		
@@ -115,10 +116,6 @@ public class TestInteractions {
 		gameBoard[10] = portal;
 		
 		assertEquals(InteractionResult.TELEPORT, portal.interact(gameBoard, portal.getLocation()));
-		
-		
-		
-
 		
 		
 		for(int i=0; i<portal.getLocation(); i++)	{
